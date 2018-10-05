@@ -565,8 +565,6 @@ end$$
 delimiter ;
 
 
-
-/*faltan plantiel tiene galpon, galpon y planilla*/
 /*Modificaicon Plantel_Tiene_Galpon*/
 delimiter $$
 create procedure Modificacion_Plantel_Tiene_Galpon(IN idPlantel_orig int,IN idPlantel_nuevo int,IN idGalpon int) /* tomo un galpon y le cambio el plantel*/
@@ -596,5 +594,68 @@ begin
     where Planilla.idPlanilla=idPlan_orig;
 end$$
 delimiter ;
+
+
+/*====================FIN PROCEDURES MODIFICACION========================*/
+/********************COMIENZO PROCEDURES DE BAJA******************/
+
+/*Baja provincia*/
+delimiter $$
+create procedure Baja_Provincia(_idProv int)
+begin
+	delete from Provincia where idProv=_idProv limit 1;
+end$$
+delimiter ;
+
+/*Baja Localidad*/
+delimiter $$
+create procedure Baja_Localidad(_idLocal int)
+begin
+	delete from Localidad where idLocalidad=_idLocal limit 1;
+end$$
+delimiter ;
+
+/*Baja Prov_Has_Localidad*/
+delimiter $$
+create procedure Baja_Prov_Has_Local( id_prov int ,id_Loc int) #Como es una tabla compuesta por dos FK, se utilizan las dos FK.
+begin
+	delete from Provincia_Has_Localidad where Provincia_Has_Localidad.Provincia_idProv=id_Prov and Provincia_Has_Localidad.Localidad_idLocalidad=id_Loc;
+end$$
+delimiter ;
+
+/*Baja Calle*/
+delimiter $$
+create procedure Baja_Calle(_idCalle int)
+begin
+	delete from Calle where idCalle=_idCalle limit 1;
+end$$
+delimiter ;
+
+/*Baja Calle_Has_Localidad*/
+delimiter $$
+create procedure Baja_Calle_Has_Localidad(_idLocalid int, _idCalle int )
+begin 
+	delete from Calle_Has_Localidad where Calle_Has_Localidad.Calle_idCalle=idCalle and Calle_Has_Localidad.Localidad_idLocalidad;
+end$$
+delimiter ;
+
+
+/*Baja Cabaña*/
+delimiter $$
+create procedure Baja_Cabaña(_idCabaña int)
+begin
+	delete from Cabaña where id_Cabaña=_idCabaña limit 1;
+end$$
+delimiter ;
+
+
+/*falta: desde clientes a empaque y desde genetica a planilla*/
+
+
+
+
+
+
+
 
 
