@@ -5,19 +5,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema practica2_granja
+-- Schema granja_tpCuatrimestral
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema practica2_granja
+-- Schema granja_tpCuatrimestral
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `practica2_granja` DEFAULT CHARACTER SET utf8 ;
-USE `practica2_granja` ;
+CREATE SCHEMA IF NOT EXISTS `granja_tpCuatrimestral` DEFAULT CHARACTER SET utf8 ;
+USE `granja_tpCuatrimestral` ;
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Calle`
+-- Table `granja_tpCuatrimestral`.`Calle`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Calle` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Calle` (
   `Nombre` VARCHAR(45) NOT NULL,
   `idCalle` INT NOT NULL,
   PRIMARY KEY (`idCalle`))
@@ -25,9 +25,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Cabaña`
+-- Table `granja_tpCuatrimestral`.`Cabaña`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Cabaña` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Cabaña` (
   `Razon_social` VARCHAR(45) NULL,
   `id_Cabaña` INT NOT NULL,
   `Cuit` VARCHAR(45) NULL,
@@ -37,16 +37,16 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Cabaña` (
   INDEX `fk_Cabaña_Calle1_idx` (`Calle_idCalle` ASC),
   CONSTRAINT `fk_Cabaña_Calle1`
     FOREIGN KEY (`Calle_idCalle`)
-    REFERENCES `practica2_granja`.`Calle` (`idCalle`)
+    REFERENCES `granja_tpCuatrimestral`.`Calle` (`idCalle`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Genetica`
+-- Table `granja_tpCuatrimestral`.`Genetica`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Genetica` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Genetica` (
   `Codigo` INT NOT NULL,
   `Nombre` VARCHAR(45) NULL,
   `Cabaña_id_Cabaña` INT NOT NULL,
@@ -54,36 +54,36 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Genetica` (
   INDEX `fk_Genetica_Cabaña_idx` (`Cabaña_id_Cabaña` ASC),
   CONSTRAINT `fk_Genetica_Cabaña`
     FOREIGN KEY (`Cabaña_id_Cabaña`)
-    REFERENCES `practica2_granja`.`Cabaña` (`id_Cabaña`)
+    REFERENCES `granja_tpCuatrimestral`.`Cabaña` (`id_Cabaña`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Plantel`
+-- Table `granja_tpCuatrimestral`.`Plantel`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Plantel` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Plantel` (
   `Codigo` INT NOT NULL,
   `Nombre` VARCHAR(45) NULL,
   `Edad_Gallinas` INT NULL,
   `Fecha_Entrada` DATE NULL,
-  `Precio_Compra` VARCHAR(45) NULL,
+  `Precio_Compra` INT NULL,
   `Genetica_Codigo` INT NOT NULL,
   PRIMARY KEY (`Codigo`),
   INDEX `fk_Plantel_Genetica1_idx` (`Genetica_Codigo` ASC),
   CONSTRAINT `fk_Plantel_Genetica1`
     FOREIGN KEY (`Genetica_Codigo`)
-    REFERENCES `practica2_granja`.`Genetica` (`Codigo`)
+    REFERENCES `granja_tpCuatrimestral`.`Genetica` (`Codigo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Galpon`
+-- Table `granja_tpCuatrimestral`.`Galpon`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Galpon` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Galpon` (
   `Numero` INT NOT NULL,
   `Ctdad_Gallinas` INT NULL,
   PRIMARY KEY (`Numero`))
@@ -91,9 +91,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Planilla`
+-- Table `granja_tpCuatrimestral`.`Planilla`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Planilla` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Planilla` (
   `idPlanilla` INT NOT NULL,
   `Fecha` DATE NULL,
   `ctdad_huevos` INT NULL,
@@ -106,16 +106,16 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Planilla` (
   INDEX `fk_Planilla_Galpon1_idx` (`Galpon_Numero` ASC),
   CONSTRAINT `fk_Planilla_Galpon1`
     FOREIGN KEY (`Galpon_Numero`)
-    REFERENCES `practica2_granja`.`Galpon` (`Numero`)
+    REFERENCES `granja_tpCuatrimestral`.`Galpon` (`Numero`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Clientes`
+-- Table `granja_tpCuatrimestral`.`Clientes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Clientes` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Clientes` (
   `Nombre` VARCHAR(45) NULL,
   `Cuit` VARCHAR(45) NOT NULL,
   `Num_dom` INT NULL,
@@ -124,16 +124,16 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Clientes` (
   INDEX `fk_Clientes_Calle1_idx` (`Calle_idCalle` ASC),
   CONSTRAINT `fk_Clientes_Calle1`
     FOREIGN KEY (`Calle_idCalle`)
-    REFERENCES `practica2_granja`.`Calle` (`idCalle`)
+    REFERENCES `granja_tpCuatrimestral`.`Calle` (`idCalle`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Empaque`
+-- Table `granja_tpCuatrimestral`.`Empaque`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Empaque` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Empaque` (
   `idEmpaque` INT NOT NULL,
   `Descripcion` VARCHAR(45) NULL,
   `Ctdad_Huevos` INT NULL,
@@ -142,9 +142,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Productos`
+-- Table `granja_tpCuatrimestral`.`Productos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Productos` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Productos` (
   `Codigo_prod` INT NOT NULL,
   `Precio_Venta` INT NULL,
   `Empaque_idEmpaque` INT NOT NULL,
@@ -152,16 +152,16 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Productos` (
   INDEX `fk_Productos_Empaque1_idx` (`Empaque_idEmpaque` ASC),
   CONSTRAINT `fk_Productos_Empaque1`
     FOREIGN KEY (`Empaque_idEmpaque`)
-    REFERENCES `practica2_granja`.`Empaque` (`idEmpaque`)
+    REFERENCES `granja_tpCuatrimestral`.`Empaque` (`idEmpaque`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Plantel_tiene_Galpon`
+-- Table `granja_tpCuatrimestral`.`Plantel_tiene_Galpon`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Plantel_tiene_Galpon` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Plantel_tiene_Galpon` (
   `Plantel_Codigo` INT NOT NULL,
   `Galpon_Numero` INT NOT NULL,
   PRIMARY KEY (`Plantel_Codigo`, `Galpon_Numero`),
@@ -169,21 +169,21 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Plantel_tiene_Galpon` (
   INDEX `fk_Plantel_tiene_Galpon_Plantel1_idx` (`Plantel_Codigo` ASC),
   CONSTRAINT `fk_Plantel_tiene_Galpon_Plantel1`
     FOREIGN KEY (`Plantel_Codigo`)
-    REFERENCES `practica2_granja`.`Plantel` (`Codigo`)
+    REFERENCES `granja_tpCuatrimestral`.`Plantel` (`Codigo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Plantel_tiene_Galpon_Galpon1`
     FOREIGN KEY (`Galpon_Numero`)
-    REFERENCES `practica2_granja`.`Galpon` (`Numero`)
+    REFERENCES `granja_tpCuatrimestral`.`Galpon` (`Numero`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Provincia`
+-- Table `granja_tpCuatrimestral`.`Provincia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Provincia` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Provincia` (
   `Nombre` VARCHAR(45) NULL,
   `idProv` INT NOT NULL,
   PRIMARY KEY (`idProv`))
@@ -191,9 +191,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Localidad`
+-- Table `granja_tpCuatrimestral`.`Localidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Localidad` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Localidad` (
   `Nombre` VARCHAR(45) NULL,
   `idLocalidad` INT NOT NULL,
   PRIMARY KEY (`idLocalidad`))
@@ -201,26 +201,26 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Factura`
+-- Table `granja_tpCuatrimestral`.`Factura`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Factura` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Factura` (
   `IdFactura` INT NOT NULL,
   `Clientes_Cuit` VARCHAR(45) NOT NULL,
   `Fecha_Venta` DATE NULL,
-  PRIMARY KEY (`IdFactura`, `Clientes_Cuit`),
+  PRIMARY KEY (`IdFactura`),
   INDEX `fk_Clientes_tiene_Productos_Clientes1_idx` (`Clientes_Cuit` ASC),
   CONSTRAINT `fk_Clientes_tiene_Productos_Clientes1`
     FOREIGN KEY (`Clientes_Cuit`)
-    REFERENCES `practica2_granja`.`Clientes` (`Cuit`)
+    REFERENCES `granja_tpCuatrimestral`.`Clientes` (`Cuit`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Detalle_Factura`
+-- Table `granja_tpCuatrimestral`.`Detalle_Factura`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Detalle_Factura` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Detalle_Factura` (
   `Factura_IdFactura` INT NOT NULL,
   `Productos_Codigo_prod` INT NOT NULL,
   `Cantidad_prod` INT NULL,
@@ -230,21 +230,21 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Detalle_Factura` (
   INDEX `fk_Productos_has_Factura_Productos1_idx` (`Productos_Codigo_prod` ASC),
   CONSTRAINT `fk_Productos_has_Factura_Productos1`
     FOREIGN KEY (`Productos_Codigo_prod`)
-    REFERENCES `practica2_granja`.`Productos` (`Codigo_prod`)
+    REFERENCES `granja_tpCuatrimestral`.`Productos` (`Codigo_prod`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Productos_has_Factura_Factura1`
     FOREIGN KEY (`Factura_IdFactura`)
-    REFERENCES `practica2_granja`.`Factura` (`IdFactura`)
+    REFERENCES `granja_tpCuatrimestral`.`Factura` (`IdFactura`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Provincia_has_Localidad`
+-- Table `granja_tpCuatrimestral`.`Provincia_has_Localidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Provincia_has_Localidad` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Provincia_has_Localidad` (
   `Provincia_idProv` INT NOT NULL,
   `Localidad_idLocalidad` INT NOT NULL,
   PRIMARY KEY (`Provincia_idProv`, `Localidad_idLocalidad`),
@@ -252,21 +252,21 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Provincia_has_Localidad` (
   INDEX `fk_Provincia_has_Localidad_Provincia1_idx` (`Provincia_idProv` ASC),
   CONSTRAINT `fk_Provincia_has_Localidad_Provincia1`
     FOREIGN KEY (`Provincia_idProv`)
-    REFERENCES `practica2_granja`.`Provincia` (`idProv`)
+    REFERENCES `granja_tpCuatrimestral`.`Provincia` (`idProv`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Provincia_has_Localidad_Localidad1`
     FOREIGN KEY (`Localidad_idLocalidad`)
-    REFERENCES `practica2_granja`.`Localidad` (`idLocalidad`)
+    REFERENCES `granja_tpCuatrimestral`.`Localidad` (`idLocalidad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `practica2_granja`.`Calle_has_Localidad`
+-- Table `granja_tpCuatrimestral`.`Calle_has_Localidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `practica2_granja`.`Calle_has_Localidad` (
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Calle_has_Localidad` (
   `Calle_idCalle` INT NOT NULL,
   `Localidad_idLocalidad` INT NOT NULL,
   PRIMARY KEY (`Calle_idCalle`, `Localidad_idLocalidad`),
@@ -274,14 +274,28 @@ CREATE TABLE IF NOT EXISTS `practica2_granja`.`Calle_has_Localidad` (
   INDEX `fk_Calle_has_Localidad_Calle1_idx` (`Calle_idCalle` ASC),
   CONSTRAINT `fk_Calle_has_Localidad_Calle1`
     FOREIGN KEY (`Calle_idCalle`)
-    REFERENCES `practica2_granja`.`Calle` (`idCalle`)
+    REFERENCES `granja_tpCuatrimestral`.`Calle` (`idCalle`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Calle_has_Localidad_Localidad1`
     FOREIGN KEY (`Localidad_idLocalidad`)
-    REFERENCES `practica2_granja`.`Localidad` (`idLocalidad`)
+    REFERENCES `granja_tpCuatrimestral`.`Localidad` (`idLocalidad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `granja_tpCuatrimestral`.`Usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `granja_tpCuatrimestral`.`Usuarios` (
+  `Nombre` VARCHAR(20) NULL,
+  `Apellido` VARCHAR(45) NULL,
+  `Legajo_Interno` VARCHAR(45) NOT NULL,
+  `Cuil` VARCHAR(45) NULL,
+  `Username` VARCHAR(45) NULL,
+  `Password` VARCHAR(45) NULL,
+  PRIMARY KEY (`Legajo_Interno`))
 ENGINE = InnoDB;
 
 
@@ -290,7 +304,9 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-/*PROCEDURES DE ALTAS:*/
+/*============================ STORED PROCEDURES===============================*/
+/*=============================================================================*/
+
 
 /*Alta Provincias*/
 DELIMITER $$
@@ -298,44 +314,53 @@ create procedure Alta_Provincia(IN _idProv int,IN _Nombre varchar(45))
 begin
 	insert into Provincia values(_Nombre,_idProv);
 end$$
-
 delimiter ;
+
+#FUNCIONA
+
 
 /*Alta prov_has_localid*/
 DELIMITER $$
 create procedure Alta_Prov_has_localidad(IN _idProv int,IN idLocalidad int)
 begin
-	insert into Provincia values(_idProv,idLocalidad);
+	insert into provincia_has_localidad values(_idProv,idLocalidad);
 end$$
-
 delimiter ;
+
+
 
 /*Alta Localidad*/
 DELIMITER $$
 create procedure Alta_Localidad(IN NombreLoc varchar(45),IN idLocalidad int)
 begin
-	insert into Provincia values(NombreLoc,idLocalidad);
+	insert into localidad values(NombreLoc,idLocalidad);
 end$$
-
 delimiter ;
+# call alta_localidad("Burzaco",1);
+# FUNCIONA
+
+
 
 /*Alta calle_has_localid*/
 DELIMITER $$
 create procedure Alta_Calle_has_localidad(IN _idCalle int,IN idLocalidad int)
 begin
-	insert into Provincia values(_idCalle,idLocalidad);
+	insert into calle_has_localidad values(_idCalle,idLocalidad);
 end$$
 
 delimiter ;
+#FUNCIONA
+
 
 /*Alta calle*/
 DELIMITER $$
 create procedure Alta_Calle(IN _nomCalle varchar(45),IN _idCalle int)
 begin
-	insert into Provincia values(_nomCalle,_idCalle);
+	insert into Calle values(_nomCalle,_idCalle);
 end$$
 delimiter ;
-
+# call alta_calle("Baso",1);
+# funciona
 
 /*ALTA Clientes*/
 delimiter $$
@@ -344,6 +369,8 @@ begin
 	insert into clientes values(_Nombre,_Cuit,_numDom,_Calle);
 end$$
 delimiter ;
+#FUNCIONA
+#call alta_clientes(null,"22",2,1);
 
 
 /*ALTA Cabañas*/
@@ -353,7 +380,7 @@ begin
 	insert into cabaña values(_RazonSocial,_idCab,_Cuit,_numDom,_Calle);
 end $$
 delimiter ;
-
+#funciona
 
 /*ALTA Genetica*/
 delimiter $$
@@ -362,26 +389,28 @@ begin
 	insert into genetica values(_Codigo,_Nombre,_idCabaña);
 end$$
 delimiter ;
+#funciona
 
 
 
 /*ALTA Plantel*/
 delimiter $$
-create procedure Alta_Plantel(IN _Codigo int,IN _Nombre varchar(45), IN _EdadGallinas int,IN _FechaEntrada date,IN _PrecioCompra varchar(45),IN _CodGenetica int)
+create procedure Alta_Plantel(IN _Codigo int,IN _Nombre varchar(45), IN _EdadGallinas int,IN _FechaEntrada date,IN _PrecioCompra INT,IN _CodGenetica int)
 begin
 	insert into Plantel values(_Codigo,_Nombre,_EdadGallinas,_FechaEntrada,_PrecioCompra,_CodGenetica);
 end$$
 delimiter ;
+#funciona
 
 
 /*ALTA Plantel_tien_Galpon*/
 delimiter $$
-create procedure Alta_Plantel_Tiene_Galpon(IN _codPlantel int,IN _codGalpon int)
+create procedure Alta_Plantel_Tiene_Galpon(IN _codPlantel int,IN _numGalpon int)
 begin
-	insert into Plantel_Tiene_Galpon values(_codPlantel,_codGalpon);
+	insert into Plantel_Tiene_Galpon values(_codPlantel,_numGalpon);
 end$$
 delimiter ;
-
+#funciona
 
 
 /*ALTA Galpon*/
@@ -391,6 +420,7 @@ begin
 	insert into galpon values(_Numero,_ctdGallinas);
 end$$
 delimiter ;
+#funciona
 
 
 /*Alta Planilla*/
@@ -400,6 +430,7 @@ begin
 	insert into Planilla values(_idPlanilla,_Fecha,_ctdHuevos,_ctdAlimento,_tipoAlimento,_ctdMuertas,_Novedad,_numGalpon);
 end$$
 delimiter ;
+#funciona
 
 
 /*Alta Empaque*/
@@ -409,6 +440,9 @@ begin
 	insert into Empaque values(_IdEmpaque,_Descripcion,_ctdHuevos);
 end$$
 delimiter ;
+#funciona
+
+
 
 /*Alta Productos*/
 delimiter $$
@@ -417,6 +451,7 @@ begin
 	insert into Productos values(_Codigoprod,_PrecioVenta,idEmpaque);
 end$$
 delimiter ;
+#funciona
 
 
 /*Alta factura*/
@@ -425,20 +460,41 @@ create procedure Alta_Factura(IN _idFactura int,IN cuit_Cliente varchar(45),IN _
 begin
 	insert into Factura values(_idFactura,cuit_Cliente,_FechaVenta);
 end$$
-
 delimiter ;
+#funciona
 
 /*Alta Detalle_Factura*/
 delimiter $$
-create procedure Alta_Detalle_Factura(IN idFactura int,IN codProd int,IN cantProd int,IN Precio int )
+create procedure Alta_Detalle_Factura(IN idFactura int,IN codProd int,IN cantProd int,IN _Precio int )
 begin
-	insert into Detalle_Factura values(idFactura,codProd,cantProd,Precio);
+	insert into Detalle_Factura values(idFactura,codProd,cantProd,_Precio);
 end$$
 delimiter ;
 
-/**************************************FIN PROCDURES ALTA***************/
-/***********************************************************************/
-/********************COMIENZO PROCEDURES DE MODIFICACION******************/
+
+/*PROCEDURE DE ALTA DE USUARIOS: VERIFICAR SI QUEDA ASI O DESPUES SE MODIFICA ====================================*/
+
+/*Alta Usuarios*/
+delimiter $$
+create procedure Alta_Usuarios(IN _Nomb varchar(20),IN _Apellido varchar(20),IN _Legajo varchar(20), _Cuil varchar(25), _User varchar(24), _Pass varchar(20))
+begin
+	insert into Usuarios values(_Nomb,_Apellido,_Legajo,_Cuil,_User,_Pass);
+end$$
+delimiter ;
+
+
+select * from usuarios;
+
+# call alta_usuarios(null,null,"adsasd","asd123","Pedrito","VM");
+# delete from usuarios;
+			
+            /*===========================================================================================================================================*/
+
+
+/*==================PROCEDURES DE MODIFICACION========================*/
+/*====================================================================*/
+
+/*IMPORTANTE:: Las modificaciones cambian incluso el ID que se haya ingresado en la tabla, EXCEPTO EN LAS QUERYS QUE SE INDIQUE LO CONTRARIO*/
 
 /*Modificacion provincia*/
 delimiter $$
@@ -448,15 +504,21 @@ begin
     where idProv=idInicial;
 end$$
 delimiter ;
+#FUNCIONA 
+
+
 
 /*Modificacion prov_has_localidad*/
 delimiter $$
-create procedure Modificacion_Prov_Has_loc(IN codLocalidad_orig int,IN codProv int,codLocalidad int)
+create procedure Modificacion_Prov_Has_loc(IN codLocalidad_orig int,IN codProv int,codLocalidad int) #en este caso solo cambio la localidad y no el id de la provincia.
 begin
 	update provincia_has_localidad set Localidad_idLocalidad=codLocalidad
     where Provincia_idProv=codProv and Localidad_idLocalidad=codLocalidad_orig;
 end$$
 delimiter ;
+#FUNCIONA
+
+
 
 /*Modificacion Localidad*/
 delimiter $$
@@ -466,16 +528,8 @@ begin
     where idLocalidad=idLoc_orig;
 end$$
 delimiter ;
- 
- 
- /*Modifcacion Calle_has_Localidad*/
-delimiter $$
-create procedure Modificacion_Calle_has_localidad(IN idLoc int,IN idCalle_orig int ,in idCalle_nueva int)
-begin
-	update Calle_Has_Localidad set Calle_idCalle=idCalle_nueva
-    where Calle_idCalle=idCalle_orig and Localidad_idLocalidad=idLoc;
-end$$
-delimiter ;
+#FUNCIONA
+
 
 /*Modificacion Calle*/
 delimiter $$
@@ -485,15 +539,28 @@ begin
     where idCalle=idCalle_orig;
 end $$
 delimiter ;
+#FUNCIONA
+
+ /*Modifcacion Calle_has_Localidad*/
+delimiter $$
+create procedure Modificacion_Calle_has_localidad(IN idLoc int,IN idCalle_orig int ,in idCalle_nueva int) #solo cambio el id de la calle pero no el de la localidad
+begin
+	update Calle_Has_Localidad set Calle_idCalle=idCalle_nueva
+    where Calle_idCalle=idCalle_orig and Localidad_idLocalidad=idLoc;
+end$$
+delimiter ;
+#FUNCIONA
+
 
 /*Modificacion Clientes*/
 delimiter $$
-create procedure Modificacion_Clientes(IN cuit_orig int,IN _Nombre varchar(45),IN _Cuit varchar(45),IN _numDom int,IN idCalle int)
+create procedure Modificacion_Clientes(IN cuit_orig int,IN _Nombre varchar(45),IN _Cuit varchar(45),IN _numDom int,IN idCalle int) 
 begin
 	update Clientes set Nombre=_Nombre,Cuit=_Cuit,num_Dom=_numDom,Calle_idCalle=idCalle
     where Cuit=cuit_orig;
 end$$
 delimiter ;
+#FUNCIONA
 
 
 /*Modificacion Factura*/
@@ -504,15 +571,18 @@ begin
     where Factura.idFactura=idFact_Orig;
 end$$
 delimiter ;
+#FUNCIONA
+
 
 /*Modificacion detalle factura*/
 delimiter $$
-create procedure Modificacion_Detalle_Factura(IN idFact int,IN idProd_orig int,IN idProd_nuevo int,IN cant int,IN _precio int)/*tomo una factura (por id), luego un producto, y cambio esos 3 datos (prod,cant y precio)*/
+create procedure Modificacion_Detalle_Factura(IN idFact int,IN idProd_orig int,IN idFact_nuevo int,IN idProd_nuevo int,IN cant int,IN _precio int)
 begin
-	update Detalle_Factura set Productos_Codigo_prod=idProd_nuevo,Cantidad_prod=cant,Precio=_precio
-    where Detalle_Factura.Factura_IdFactura=idFact;
+	update Detalle_Factura set Productos_Codigo_prod=idProd_nuevo,Cantidad_prod=cant,Precio=_precio,Factura_IdFactura=idFact_nuevo
+    where Detalle_Factura.Factura_IdFactura=idFact and Detalle_Factura.Factura_Productos_Codigo_prod=idProd_orig;
 end$$
 delimiter ;
+#Funciona
 
 /*Modificacion productos*/
 delimiter $$
@@ -522,7 +592,7 @@ begin
     where Productos.Codigo_Prod=idProd_orig;
 end$$
 delimiter ;
-
+#FUNCIONA
 
 /*Modificacion empaque*/
 delimiter $$
@@ -532,15 +602,19 @@ begin
     where Empaque.idEmpaque=_idEmpaque_orig;
 end$$
 delimiter ;
+#FUNCIONA
+
 
 /*Modificacion Cabaña*/
 delimiter $$
 create procedure Modificacion_Cabaña(IN idCab_orig int,IN _RazonSocial varchar(45), IN idCab_nuevo int,IN _Cuit varchar(45),IN _NumDom int,IN idCalle int)
 begin
 	update Cabaña set Razon_Social=_RazonSocial,id_Cabaña=idCab_nuevo,Cuit=_Cuit,Num_Dom=_NumDom,Calle_idCalle=idCalle
-    where Cabaña.id_Cabaña=idCar_orig;
+    where Cabaña.id_Cabaña=idCab_orig;
 end$$
 delimiter ;
+#FUNCIONA
+
 
 /*Modificacion Genetica*/
 delimiter $$
@@ -550,11 +624,9 @@ begin
     where Genetica.Codigo=codGen_orig;
 end$$
 delimiter ;
+#FUNCIONA
 
 
-
--- alter table Plantel modify column precio_compra int;
-/*Modificacion Plantel*/
 delimiter $$
 create procedure Modificacion_Plantel(IN cod_orig int,IN cod_nuevo int,IN _Nombre varchar(45),IN _edadGallinas int,IN _FechaEntrada date,IN _precioCompra int,IN Gen_Cod int)
 begin
@@ -562,16 +634,17 @@ begin
     where Plantel.Codigo=cod_orig;
 end$$
 delimiter ;
+#FUNCIONA
 
 
-/*Modificaicon Plantel_Tiene_Galpon*/
 delimiter $$
-create procedure Modificacion_Plantel_Tiene_Galpon(IN idPlantel_orig int,IN idPlantel_nuevo int,IN idGalpon int) /* tomo un galpon y le cambio el plantel*/
+create procedure Modificacion_Plantel_Tiene_Galpon(IN idPlantel_orig int,IN idPlantel_nuevo int,IN idGalpon int,IN idGalpon_nuevo int)
 begin
-	update Plantel_tiene_Galpon set Plantel_Codigo=idPlantel_nuevo,Galpon_Numero=idGalpon
+	update Plantel_tiene_Galpon set Plantel_Codigo=idPlantel_nuevo,Galpon_Numero=idGalpon_nuevo
     where Plantel_Codigo=idPlantel_orig and Galpon_Numero=idGalpon;
 end$$
 delimiter ;
+#FUNCIONA
 
 
 /*Modificacion Galpon*/
@@ -582,6 +655,7 @@ begin
     where Numero=numGalpon_orig;
 end$$
 delimiter ;
+#FUNCIONA
 
 
 /*Modificacion Planilla*/
@@ -593,62 +667,26 @@ begin
     where Planilla.idPlanilla=idPlan_orig;
 end$$
 delimiter ;
+#FUNCIONA
 
 
-/*====================FIN PROCEDURES MODIFICACION========================*/
-/********************COMIENZO PROCEDURES DE BAJA******************/
-
-/*Baja provincia*/
+/*======PROCEDURE DE MODIFICACION DE USUARIO=====*/
 delimiter $$
-create procedure Baja_Provincia(_idProv int)
+create procedure Modificacion_Usuarios(IN Legajo_orig varchar(45),IN _Nomb varchar(20),_Apellido varchar(23),IN Legajo_nuevo varchar(45), _Cuil varchar(45),
+IN _User varchar(45),IN _Pass varchar(45))
 begin
-	delete from Provincia where idProv=_idProv limit 1;
+	update Usuarios set Nombre=_Nomb,Apellido=_Apellido,Legajo_Interno=Legajo_nuevo,Cuil=_Cuil,Username=_User,Usuarios.password=_Pass
+    where Usuarios.Legajo_Interno=Legajo_orig;
 end$$
 delimiter ;
-
-/*Baja Localidad*/
-delimiter $$
-create procedure Baja_Localidad(_idLocal int)
-begin
-	delete from Localidad where idLocalidad=_idLocal limit 1;
-end$$
-delimiter ;
-
-/*Baja Prov_Has_Localidad*/
-delimiter $$
-create procedure Baja_Prov_Has_Local( id_prov int ,id_Loc int) #Como es una tabla compuesta por dos FK, se utilizan las dos FK.
-begin
-	delete from Provincia_Has_Localidad where Provincia_Has_Localidad.Provincia_idProv=id_Prov and Provincia_Has_Localidad.Localidad_idLocalidad=id_Loc;
-end$$
-delimiter ;
-
-/*Baja Calle*/
-delimiter $$
-create procedure Baja_Calle(_idCalle int)
-begin
-	delete from Calle where idCalle=_idCalle limit 1;
-end$$
-delimiter ;
-
-/*Baja Calle_Has_Localidad*/
-delimiter $$
-create procedure Baja_Calle_Has_Localidad(_idLocalid int, _idCalle int )
-begin 
-	delete from Calle_Has_Localidad where Calle_Has_Localidad.Calle_idCalle=idCalle and Calle_Has_Localidad.Localidad_idLocalidad;
-end$$
-delimiter ;
+#PASSWORD ES UNA PALABRA RESERVADA, PERO IGUAL FUNCIONA.
 
 
-/*Baja Cabaña*/
-delimiter $$
-create procedure Baja_Cabaña(_idCabaña int)
-begin
-	delete from Cabaña where id_Cabaña=_idCabaña limit 1;
-end$$
-delimiter ;
+/*===============FIN PROCEDURES DE MODIFICACIONES==================================================================*/
 
 
-/*falta: desde clientes a empaque y desde genetica a planilla*/
+
+
 
 
 

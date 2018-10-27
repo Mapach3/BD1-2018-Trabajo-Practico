@@ -1,0 +1,6 @@
+Tabla usuarios: 
+-> Va relacionada con planilla?
+-> Su PK es legajo_interno?
+
+Una vez resuelto esto, continuar con carga de datos y los indices
+
