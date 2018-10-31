@@ -350,7 +350,7 @@ delimiter ;
 
 /* MODIFICACION PLANILLA */
 delimiter $$
-create procedure Modificacion_Planilla(IN NumGalpon_old int,IN fecha_old date,IN NumGalpon_new int,IN Fecha_new DATE,IN _ctdHuevos int,IN _ctdAlim int,IN tipoAlim varchar(45),IN ctdMuertes int,IN _Novedad text)
+create procedure Modificacion_Planilla(IN NumGalpon_old int,IN fecha_old date,IN NumGalpon_new int,IN Fecha_new DATE,IN ctdHuevos int,IN _ctdAlim int,IN tipoAlim varchar(45),IN ctdMuertes int,IN _Novedad text)
 begin
 	update Planilla set Galpon_Numero=NumGalpon_new,Fecha=Fecha_new,ctdad_huevos=_ctdHuevos,cant_alimento=_ctdAlim,
     tipo_Alimento=tipoAlim,ctdad_Muertas=ctdMuertes,novedades=_Novedad,Legajo_usuario=current_user(),FechaHora_Insert=now()
@@ -375,6 +375,31 @@ delimiter ;
 
 
 /*============================FIN PROCEDURES DE MODIFICACIONES==================================================================*/
+
+
+/*TRIGGERS QUE AGREGUEN UN REGISTRO A LA TABLA PLANILLA_LOG CUANDO HAYA UNA BAJA O MODIFICACION EN LA MISMA*/
+
+/*TRIGGER QUE CREE UN REGISTRO EN PLANILLA_LOG CUANDO HAYA UNA BAJA EN PLANILLA*/
+create trigger Baja_Planilla_AD BEFORE DELETE ON planilla FOR EACH ROW
+insert into planilla_log (Galpon_Numero,Fecha,ctdad_huevos,cant_alimento,tipo_alimento,ctdad_muertas,novedades,Legajo_Usuario,FechaHora_Insert)
+values(old.galpon_numero,old.fecha,old.ctdad_huevos,old.cant_alimento,old.tipo_alimento,
+old.ctdad_muertas,old.novedades,old.Legajo_Usuario,old.fechaHora_insert);
+#FUNCIONA
+#Hay que agregar el nombre de los campos despues del nombre de la tabla para que funcion el auto_increment!!!!
+
+
+/*TRIGGER QUE CREE REGISTRO EN PLANILLA_LOG CUANDO HAYA UN UPDATE EN PLANILLA*/
+create trigger Modif_Planilla_BU BEFORE UPDATE ON planilla FOR EACH ROW
+insert into planilla_log (Galpon_Numero,Fecha,ctdad_huevos,cant_alimento,tipo_alimento,ctdad_muertas,novedades,Legajo_Usuario,FechaHora_Insert)
+values(old.galpon_numero,old.fecha,old.ctdad_huevos,old.cant_alimento,old.tipo_alimento,
+old.ctdad_muertas,old.novedades,old.Legajo_Usuario,old.fechaHora_insert);
+#FUNCIONA
+#Hay que agregar el nombre de los campos despues del nombre de la tabla para que funcion el auto_increment!!!!
+
+
+
+
+
 
 
 
