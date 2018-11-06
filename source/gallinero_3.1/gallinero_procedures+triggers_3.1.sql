@@ -58,22 +58,21 @@ delimiter ;
 # call alta_calle("Baso",1);
 # funciona
 
-/*ALTA Clientes*/
+/*ALTA Clientes --> fix 06/11 18:01*/
 delimiter $$
-CREATE PROCEDURE Alta_clientes(IN _Nombre varchar(45),IN _Cuit varchar(45),IN _numDom int, _Calle varchar(45))
+CREATE PROCEDURE Alta_clientes(IN _Nombre varchar(45),IN _Cuit varchar(45),IN _numDom int, _Calle int,_Localidad int,_Provincia int)
 begin
-	insert into clientes values(_Nombre,_Cuit,_numDom,_Calle);
+	insert into clientes values(_Nombre,_Cuit,_numDom,_Calle,_Localidad,_Provincia);
 end$$
 delimiter ;
 #FUNCIONA
-#call alta_clientes(null,"22",2,1);
 
 
 /*ALTA Cabañas*/
 delimiter $$
-create procedure Alta_cabaña(IN _RazonSocial varchar(45),IN _idCab int ,IN _Cuit varchar(45),IN _numDom int,IN _Calle varchar(45))
+create procedure Alta_cabaña(IN _RazonSocial varchar(45),IN _idCab int ,IN _Cuit varchar(45),IN _numDom int,IN _Calle int,_Localidad int,_Provincia int)
 begin
-	insert into cabaña values(_RazonSocial,_idCab,_Cuit,_numDom,_Calle);
+	insert into cabaña values(_RazonSocial,_idCab,_Cuit,_numDom,_Calle,_Localidad,_Provincia);
 end $$
 delimiter ;
 #funciona
@@ -239,11 +238,11 @@ delimiter ;
 #FUNCIONA
 
 
-/*Modificacion Clientes*/
+/*Modificacion Clientes --> fix 06/11 18:04*/
 delimiter $$
-create procedure Modificacion_Clientes(IN cuit_orig int,IN _Nombre varchar(45),IN _Cuit varchar(45),IN _numDom int,IN idCalle int) 
+create procedure Modificacion_Clientes(IN cuit_orig int,IN _Nombre varchar(45),IN _Cuit varchar(45),IN _numDom int,IN idCalle int, idLocalidad int, idProv int) 
 begin
-	update Clientes set Nombre=_Nombre,Cuit=_Cuit,num_Dom=_numDom,Calle_idCalle=idCalle
+	update Clientes set Nombre=_Nombre,Cuit=_Cuit,num_Dom=_numDom,Calle_idCalle=idCalle,Localidad_idLocalidad=idLocalidad,Provincia_idProv=idProv
     where Cuit=cuit_orig;
 end$$
 delimiter ;
@@ -294,11 +293,11 @@ delimiter ;
 #FUNCIONA
 
 
-/*Modificacion Cabaña*/
+/*Modificacion Cabaña --> fix 06/11 18:06*/
 delimiter $$
-create procedure Modificacion_Cabaña(IN idCab_orig int,IN _RazonSocial varchar(45), IN idCab_nuevo int,IN _Cuit varchar(45),IN _NumDom int,IN idCalle int)
+create procedure Modificacion_Cabaña(IN idCab_orig int,IN _RazonSocial varchar(45), IN idCab_nuevo int,IN _Cuit varchar(45),IN _NumDom int,IN idCalle int,idLocalidad int, idProv int)
 begin
-	update Cabaña set Razon_Social=_RazonSocial,id_Cabaña=idCab_nuevo,Cuit=_Cuit,Num_Dom=_NumDom,Calle_idCalle=idCalle
+	update Cabaña set Razon_Social=_RazonSocial,id_Cabaña=idCab_nuevo,Cuit=_Cuit,Num_Dom=_NumDom,Calle_idCalle=idCalle,Localidad_idLocalidad=idLocalidad,Provincia_idProv=idProv
     where Cabaña.id_Cabaña=idCab_orig;
 end$$
 delimiter ;
