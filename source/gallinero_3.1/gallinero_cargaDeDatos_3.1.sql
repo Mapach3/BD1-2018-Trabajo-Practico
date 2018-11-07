@@ -198,6 +198,23 @@ select * from planilla;
 
 
 
+/*carga empaques*/
+call alta_empaque(1,"Media Docena",6);
+call alta_empaque(2,"Docena",12);
+call alta_empaque(3,"Maple",30);
+
+
+/*productos*/
+call alta_productos(1,20,1);
+call alta_productos(2,50,2);
+call alta_productos(3,120,3);
+
+
+/*falta Facturas y Detalle de las mismas*/
+
+
+
+
 
 
 
