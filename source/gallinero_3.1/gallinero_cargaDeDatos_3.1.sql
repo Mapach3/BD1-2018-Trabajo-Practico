@@ -137,6 +137,75 @@ select * from cabaña;
 /*fin de carga de cabañas*/
 
 
+/*geneticas*/
+call alta_genetica(1,"Mayor Produccion",1);
+call alta_genetica(2,"Cresta Simple",1);
+call alta_genetica(3,"Cresta Guisante",2);
+call alta_genetica(4,"Cresta en Rosa",3);
+call alta_genetica(5,"Tipo Salvaje",4);
+call alta_genetica(6,"Cresta en Fresa",5);
+call alta_genetica(7,"Cresta Doble",6);
+/*fin carga geneticas*/
+
+
+
+/*carga de planteles*/
+call alta_plantel(1,"Pollitos",4,'2018-07-22',1000,1); -- YYYY/MM/DD
+call alta_plantel(2,"Adultas",8,'2018-01-14',1500,2);
+call alta_plantel(3,"Ponedoras",1,'2018-12-21',500,3);
+call alta_plantel(4,"Modificadas",3,'2018-04-02',700,4);
+call alta_plantel(5,"Genetica Normal",2,'2017-05-14',2500,5);
+call alta_plantel(6,"Nueva Crianza",6,'2018-08-11',3000,6);
+
+
+/*carga de galpones*/
+call alta_galpon(1,200);
+call alta_galpon(2,100);
+call alta_galpon(3,150);
+call alta_galpon(4,300);
+call alta_galpon(5,120);
+
+
+
+/*carga plantel_tiene_galpon*/
+call alta_plantel_tiene_galpon(1,1);
+call alta_plantel_tiene_galpon(1,2);
+call alta_plantel_tiene_galpon(2,3);
+call alta_plantel_tiene_galpon(3,4);
+call alta_plantel_tiene_galpon(4,5);
+
+
+/*cargo usuarios --> para poder armar planillas*/
+call alta_usuarios("Tomas","Jones",current_user(),"21-288182-23","Tom","tomi123");
+call alta_usuarios("Juan","Peralta","localUser","20-40892123-20","Juansito","juan889");
+call alta_usuarios("Hernan","Migulete","441923","20-42213123-20","Hernancito","herni456");
+
+
+
+/*cargo planillas --> user y hora de insert se cargan automaticamente en el procedure*/
+call Alta_Planilla(1,'2018-11-05',20,450,"Proteina",5,"---");
+call Alta_Planilla(2,'2018-10-03',25,420,"Calcio",2,"---");
+call Alta_Planilla(3,'2017-12-25',50,300,"Carburante",0,"Muchos Huevos");
+call Alta_Planilla(4,'2018-10-23',43,420,"Mas PS",4,"---");
+call Alta_Planilla(5,'2018-04-20',50,300,"Esteroidico",20,"Defuncion Anormal");
+call alta_planilla(1,'2018-11-02',30,440,"Hierro",7,"---");
+
+/*modifico el primer registro que cargue para que se guarde en planilla_log*/
+call Modificacion_Planilla(1,'2018-11-05',1,'2018-11-05',10,400,"Mas PP",5,"----");
+select * from planilla_log;
+select * from planilla;
+/*funciona*/
+
+
+
+
+
+
+
+
+
+
+
 
 
 

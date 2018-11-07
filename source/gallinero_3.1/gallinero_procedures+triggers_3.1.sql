@@ -349,7 +349,7 @@ delimiter ;
 
 /* MODIFICACION PLANILLA */
 delimiter $$
-create procedure Modificacion_Planilla(IN NumGalpon_old int,IN fecha_old date,IN NumGalpon_new int,IN Fecha_new DATE,IN ctdHuevos int,IN _ctdAlim int,IN tipoAlim varchar(45),IN ctdMuertes int,IN _Novedad text)
+create procedure Modificacion_Planilla(IN NumGalpon_old int,IN fecha_old date,IN NumGalpon_new int,IN Fecha_new DATE,IN _ctdHuevos int,IN _ctdAlim int,IN tipoAlim varchar(45),IN ctdMuertes int,IN _Novedad text)
 begin
 	update Planilla set Galpon_Numero=NumGalpon_new,Fecha=Fecha_new,ctdad_huevos=_ctdHuevos,cant_alimento=_ctdAlim,
     tipo_Alimento=tipoAlim,ctdad_Muertas=ctdMuertes,novedades=_Novedad,Legajo_usuario=current_user(),FechaHora_Insert=now()
