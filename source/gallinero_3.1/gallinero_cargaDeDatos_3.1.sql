@@ -210,7 +210,41 @@ call alta_productos(2,50,2);
 call alta_productos(3,120,3);
 
 
-/*falta Facturas y Detalle de las mismas*/
+/*Facturas con el detalle de las mismas*/
+call Alta_Factura(1,"14-7772134-14",'2018-06-11');
+call Alta_Detalle_Factura(1,1,1,20); 	/*ID FACT, ID PROD, CANT, PRECIO*/
+call Alta_Detalle_Factura(1,2,2,50);
+
+call alta_Factura(2,"20-8823434-14",'2018-11-18');
+call Alta_Detalle_Factura(2,2,4,50); 	/*ID FACT, ID PROD, CANT, PRECIO*/
+call Alta_Detalle_Factura(2,3,4,120);
+call Alta_Detalle_Factura(2,1,5,20);
+
+
+call alta_Factura(3,"18-23122452-19",'2018-11-12');
+call Alta_Detalle_Factura(3,1,2,20); 	/*ID FACT, ID PROD, CANT, PRECIO*/
+call Alta_Detalle_Factura(3,2,2,50);
+call Alta_Detalle_Factura(3,3,2,120);
+
+
+call alta_Factura(4,"15-7772134-14",'2017-10-03');
+call Alta_Detalle_Factura(4,3,2,120); 	/*ID FACT, ID PROD, CANT, PRECIO*/
+
+call Alta_Factura(5,"14-7772134-14",'2011-06-11');
+call Alta_Detalle_Factura(5,1,5,20); 	/*ID FACT, ID PROD, CANT, PRECIO*/
+call Alta_Detalle_Factura(5,2,5,50);
+
+
+
+/*imprimir facturas con su detalle*/
+select idFactura,Clientes_Cuit,empaque.descripcion,cantidad_prod,precio from factura
+inner join detalle_factura on factura.idFactura=detalle_factura.Factura_idFactura
+inner join productos on productos.codigo_prod=detalle_factura.productos_codigo_prod
+inner join empaque on productos.empaque_idEmpaque=empaque.idEmpaque
+order by idFactura;
+
+
+
 
 
 
