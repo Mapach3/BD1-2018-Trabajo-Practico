@@ -205,9 +205,10 @@ call alta_empaque(3,"Maple",30);
 
 
 /*productos*/
-call alta_productos(1,20,1);
-call alta_productos(2,50,2);
-call alta_productos(3,120,3);
+call alta_productos(1,20,1);	-- Huevos Blancos
+call alta_productos(2,50,2);	-- Huevos Blancos
+call alta_productos(3,120,3);	-- Huevos Blancos
+call alta_productos(4,35,1);	-- Huevos Rosados (mismo empaque (media Docena), diferente producto)
 
 
 /*Facturas con el detalle de las mismas*/
@@ -219,6 +220,7 @@ call alta_Factura(2,"20-8823434-14",'2018-11-18');
 call Alta_Detalle_Factura(2,2,4,50); 	/*ID FACT, ID PROD, CANT, PRECIO*/
 call Alta_Detalle_Factura(2,3,4,120);
 call Alta_Detalle_Factura(2,1,5,20);
+call Alta_Detalle_Factura(2,4,2,35);
 
 
 call alta_Factura(3,"18-23122452-19",'2018-11-12');
@@ -229,6 +231,7 @@ call Alta_Detalle_Factura(3,3,2,120);
 
 call alta_Factura(4,"15-7772134-14",'2017-10-03');
 call Alta_Detalle_Factura(4,3,2,120); 	/*ID FACT, ID PROD, CANT, PRECIO*/
+call Alta_Detalle_Factura(4,4,3,35);
 
 call Alta_Factura(5,"14-7772134-14",'2011-06-11');
 call Alta_Detalle_Factura(5,1,5,20); 	/*ID FACT, ID PROD, CANT, PRECIO*/
@@ -242,6 +245,101 @@ inner join detalle_factura on factura.idFactura=detalle_factura.Factura_idFactur
 inner join productos on productos.codigo_prod=detalle_factura.productos_codigo_prod
 inner join empaque on productos.empaque_idEmpaque=empaque.idEmpaque
 order by idFactura;
+
+
+
+
+
+/*=========CONSULTAS=======*/
+
+
+/*1. Cantidad de gallinas muertas, por plantel y galpón entre fechas*/
+create index I_GalponYFecha on Planilla (Galpon_Numero,Fecha);
+create index I_NumYCantidad on Galpon (Numero,Ctdad_Gallinas);
+create index I_CodYGenetic_Cod on plantel (Codigo,Genetica_Codigo);
+
+select planilla.ctdad_muertas as Muertas,plantel.nombre as Plantel,planilla.galpon_numero as Galpon,fecha as Fecha from planilla
+inner join galpon on planilla.galpon_numero=galpon.numero
+inner join plantel_tiene_galpon on plantel_tiene_galpon.galpon_numero=galpon.numero
+inner join plantel on plantel_tiene_galpon.plantel_codigo=plantel.codigo
+where fecha > '2011-02-11' and fecha <= now() and planilla.Galpon_Numero=1;
+
+
+
+
+
+/*2. Listado de productos vendidos a clientes, filtrado por cliente y producto */
+create index I_EmpaqueYCod on Productos (Empaque_idEmpaque,Codigo_Prod);
+create index I_ClienYFact on Factura (Clientes_Cuit,IdFactura);
+
+select clientes.Nombre as nombre,productos.codigo_prod as Producto, precio_venta as Precio,Factura_IdFactura as Factura from Productos
+inner join Empaque on empaque.idEmpaque=productos.Empaque_idEmpaque
+inner join Detalle_Factura on productos.Codigo_prod=detalle_Factura.productos_codigo_prod
+inner join Factura on detalle_Factura.factura_idFactura=Factura.idFactura
+inner join Clientes on factura.Clientes_Cuit=clientes.cuit
+where clientes.nombre="Juana Repetto" and productos.codigo_prod=1
+order by clientes.cuit,productos.codigo_prod;
+
+
+
+/*3. Listado de productos vendidos a clientes, filtrado por cliente y tipo de empaque.*/
+create index I_FactYProd on Detalle_Factura (Factura_idFactura,Productos_Codigo_Prod);
+
+explain select clientes.Nombre as nombre,detalle_factura.productos_codigo_prod as Producto,empaque.descripcion as Empaque, precio_venta as Precio,Factura_IdFactura as Factura from Productos
+inner join Empaque on empaque.idEmpaque=productos.Empaque_idEmpaque
+inner join Detalle_Factura on productos.Codigo_prod=detalle_Factura.productos_codigo_prod
+inner join Factura on detalle_Factura.factura_idFactura=Factura.idFactura
+inner join Clientes on factura.Clientes_Cuit=clientes.cuit
+where clientes.nombre="Juanito Alegria" and Empaque.Descripcion="Docena"
+order by clientes.cuit,productos.empaque_idEmpaque;
+
+
+
+
+/*4. Listado de ventas filtrado por localidad. */
+create index I_LocYCuit on Clientes (Localidad_IdLocalidad,Cuit);
+
+select localidad.Nombre as Localidad,clientes.nombre as Cliente,detalle_factura.factura_idFactura as Factura,detalle_factura.productos_codigo_prod as Producto from Productos
+inner join Detalle_factura on productos.codigo_prod=detalle_factura.productos_codigo_prod
+inner join factura on detalle_Factura.factura_idFactura=Factura.IdFactura
+inner join Clientes on factura.clientes_cuit=Clientes.cuit
+inner join Localidad on Clientes.Localidad_idLocalidad=Localidad.IdLocalidad
+where localidad.nombre="Avellaneda"
+order by clientes.Localidad_idLocalidad;
+
+
+
+/*5. Listado de entregas de alimento entre fechas, filtrado por galpón*/ 
+create index I_TipoAlimYGalponYFecha on Planilla (tipo_Alimento,Galpon_Numero,Fecha);
+
+
+select planilla.Galpon_Numero as Galpon,planilla.Fecha as Fecha,planilla.Tipo_alimento as Alimento,planilla.cant_alimento as KG from Planilla
+where fecha > '2013-01-22' and fecha < now() and planilla.galpon_numero=1
+order by galpon_numero,fecha;
+
+
+
+/*6. Listado de entregas de alimento entre fechas, filtrado por plantel */
+
+select Plantel.codigo as Plantel,planilla.galpon_numero as Galpon,planilla.Fecha as Fecha,planilla.Tipo_Alimento as Alimento, planilla.cant_alimento as KG from Planilla
+inner join galpon on planilla.galpon_numero=galpon.numero
+inner join plantel_tiene_galpon on plantel_tiene_galpon.galpon_numero=galpon.numero
+inner join plantel on plantel_tiene_galpon.plantel_codigo=plantel.codigo
+where fecha > '2016-02-27' and fecha < now() and plantel.codigo=3;
+
+
+
+/*7. Listado de planteles que alguna vez se hayan alojado en la granja, filtrado por cabaña y genética.  */
+create index I_CabaYGenetica on Genetica (Cabaña_id_Cabaña,Codigo);
+
+explain select plantel.nombre as Plantel,genetica.Nombre as Genetica, Cabaña.razon_Social as Cabaña from Galpon
+inner join plantel_tiene_galpon on galpon.numero=plantel_tiene_galpon.galpon_numero
+inner join plantel on plantel_tiene_galpon.plantel_codigo=plantel.codigo
+inner join genetica on plantel.genetica_codigo=genetica.codigo
+inner join cabaña on cabaña.id_cabaña=genetica.cabaña_id_cabaña
+where cabaña.razon_social="Los Pollos Hermanos SRL" and Genetica.nombre="Mayor Produccion";
+
+
 
 
 
