@@ -262,8 +262,8 @@ select planilla.ctdad_muertas as Muertas,plantel.nombre as Plantel,planilla.galp
 inner join galpon on planilla.galpon_numero=galpon.numero
 inner join plantel_tiene_galpon on plantel_tiene_galpon.galpon_numero=galpon.numero
 inner join plantel on plantel_tiene_galpon.plantel_codigo=plantel.codigo
-where fecha > '2011-02-11' and fecha <= now() and planilla.Galpon_Numero=1;
-
+where fecha > '2011-02-11' and fecha <= now()
+order by plantel,galpon;
 
 
 
@@ -277,15 +277,14 @@ inner join Empaque on empaque.idEmpaque=productos.Empaque_idEmpaque
 inner join Detalle_Factura on productos.Codigo_prod=detalle_Factura.productos_codigo_prod
 inner join Factura on detalle_Factura.factura_idFactura=Factura.idFactura
 inner join Clientes on factura.Clientes_Cuit=clientes.cuit
-where clientes.nombre="Juana Repetto" and productos.codigo_prod=1
-order by clientes.cuit,productos.codigo_prod;
+where clientes.nombre="Juana Repetto" and productos.codigo_prod=1;
 
 
 
 /*3. Listado de productos vendidos a clientes, filtrado por cliente y tipo de empaque.*/
 create index I_FactYProd on Detalle_Factura (Factura_idFactura,Productos_Codigo_Prod);
 
-explain select clientes.Nombre as nombre,detalle_factura.productos_codigo_prod as Producto,empaque.descripcion as Empaque, precio_venta as Precio,Factura_IdFactura as Factura from Productos
+select clientes.Nombre as nombre,detalle_factura.productos_codigo_prod as Producto,empaque.descripcion as Empaque, precio_venta as Precio,Factura_IdFactura as Factura from Productos
 inner join Empaque on empaque.idEmpaque=productos.Empaque_idEmpaque
 inner join Detalle_Factura on productos.Codigo_prod=detalle_Factura.productos_codigo_prod
 inner join Factura on detalle_Factura.factura_idFactura=Factura.idFactura
@@ -332,7 +331,7 @@ where fecha > '2016-02-27' and fecha < now() and plantel.codigo=3;
 /*7. Listado de planteles que alguna vez se hayan alojado en la granja, filtrado por cabaña y genética.  */
 create index I_CabaYGenetica on Genetica (Cabaña_id_Cabaña,Codigo);
 
-explain select plantel.nombre as Plantel,genetica.Nombre as Genetica, Cabaña.razon_Social as Cabaña from Galpon
+select plantel.nombre as Plantel,genetica.Nombre as Genetica, Cabaña.razon_Social as Cabaña from Galpon
 inner join plantel_tiene_galpon on galpon.numero=plantel_tiene_galpon.galpon_numero
 inner join plantel on plantel_tiene_galpon.plantel_codigo=plantel.codigo
 inner join genetica on plantel.genetica_codigo=genetica.codigo
